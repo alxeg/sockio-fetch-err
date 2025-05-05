@@ -1,0 +1,34 @@
+networks:
+  test:
+services:
+  redis:
+    image: redis:7-alpine
+    ports:
+      - 6379:6379
+    networks:
+      - test
+
+  test1:
+    image: test
+    build:
+      context: .
+      dockerfile_inline: |
+        FROM golang:1.24-alpine
+        ADD . /test
+        RUN cd /test && go build main.go
+        CMD /test/main
+    depends_on:
+      - redis
+    ports:
+      - 3000:3000
+    networks:
+      - test
+
+  test2:
+    image: test
+    depends_on:
+      - redis
+    ports:
+      - 3001:3000
+    networks:
+      - test
