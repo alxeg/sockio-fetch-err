@@ -13,7 +13,7 @@ services:
     build:
       context: .
       dockerfile_inline: |
-        FROM golang:1.24-alpine
+        FROM golang:1.26-alpine
         ADD . /test
         RUN cd /test && go build main.go
         CMD /test/main
